@@ -1,18 +1,18 @@
 // Función para manejar errores de la aplicación
-var createError = require('http-errors');
-
+//var createError = require('http-errors');
+import createError from 'http-errors';
 // Importa el framework Express
-var express = require('express');
-
+//var express = require('express');
+import express from 'express';
 // Importa módulo para manejar rutas
-var path = require('path');
-
+//var path = require('path');
+import path from 'path';
 // Importa módulo para manejar cookies
-var cookieParser = require('cookie-parser');
-
+//var cookieParser = require('cookie-parser');
+import cookieParser from 'cookie-parser';
 // Importa módulo para manejar logs
-var logger = require('morgan');
-
+//var logger = require('morgan');
+import logger from 'morgan';
 // Importa las rutas de la aplicación
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');

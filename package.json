@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "DEBUG=dwssr-2026b:* node ./server/bin/www",
-    "dev": "DEBUG=dwssr-2026b:* node ./server/bin/www",
+    "start": "node ./server/bin/www",
+    "dev": "DEBUG=dwssr-2026b:* nodemon ./server/bin/www",
     "greet": "echo 'Hola Mundo'"
   },
   "dependencies": {
@@ -15,5 +15,8 @@
     "hbs": "~4.0.4",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }

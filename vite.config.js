@@ -1,33 +1,45 @@
-//Importando configuracion de vite 
-import { defineConfig } from 'vite';
-// Importando un admin de ruta
-import resolve from 'node:path';
+// Importar configurador de Vite
+import { defineConfig } from 'vite'
 
+// Importar administrador de rutas
+import { resolve } from 'node:path'
+
+// Importar módulos para crear __dirname
+import { fileURLToPath } from 'node:url'
+import { dirname } from 'node:path'
+
+// Crear __filename y __dirname
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+// Configuración de Vite
 export default defineConfig({
-  //directorio raiz de los archivos fuentes del front-end
-    root: "src",
-    //configuración de servidor de desarrollo
+
+    // Carpeta raíz del frontend
+    root: 'src',
+
+    // Servidor de desarrollo
     server: {
-        // puerto de escucha
+        host: '0.0.0.0',
         port: 5173,
-        //Rigidez del puerto
-        strict: true
+        strictPort: true
     },
-    // Configuración de Build
+
+    // Configuración de compilación
     build: {
-        // Directorio de salida del js para produccion
-        outDir: "../dist",
-        // asegurando limpieza del folder de prod//
+        outDir: '../dist',
         emptyOutDir: true,
-        // minificación del código para producción
-        minifest: true,
-        //opciones de empaquetado
+
+        // Generar manifest
+        manifest: true,
+
         rollupOptions: {
             input: {
-                main: resolve(__dirname, "src/main.js")
+                main: resolve(__dirname, 'src/main.js')
             }
         }
     },
-    //configuracion para desarrollo
+
+    // No utilizar publicDir de Vite
     publicDir: false
-});
+})

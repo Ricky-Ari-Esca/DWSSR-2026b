@@ -2,12 +2,13 @@ import express from 'express'
 
 const router = express.Router()
 
-/* GET home page. */
+// Página principal
+router.get('/', function (req, res) {
 
-router.get('/', function(req, res, next) {
-  res.render('index', {
-    title: 'Express'
-  })
+    res.render('index', {
+        title: 'DWSSR-2026b'
+    })
+
 })
 
 export default router

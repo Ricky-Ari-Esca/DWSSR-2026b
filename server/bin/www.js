@@ -1,108 +1,119 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
-
-import app from '../app.js'
-
-// Importando Debug
-import createDebug from 'debug'
+// Importar HTTP
 import http from 'node:http'
 
-// Creación del objeto Debug
-const debug = createDebug('dwssr-2026b:server')
+// Importar aplicación Express
+import app from '../app.js'
 
-/**
- * Get port from environment and store in Express.
- */
+// --------------------------------------------------
+// CONFIGURACIÓN DEL PUERTO
+// --------------------------------------------------
 
-const port = normalizePort(process.env.PORT || '3000')
+const port = normalizePort(
+    process.env.PORT || '3000'
+)
 
 app.set('port', port)
 
-/**
- * Create HTTP server.
- */
+// --------------------------------------------------
+// CREAR SERVIDOR
+// --------------------------------------------------
 
 const server = http.createServer(app)
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+// --------------------------------------------------
+// INICIAR SERVIDOR
+// --------------------------------------------------
 
-server.listen(port, '0.0.0.0')
+server.listen(port)
 
 server.on('error', onError)
+
 server.on('listening', onListening)
 
-/**
- * Normalize a port into a number, string, or false.
- */
+// --------------------------------------------------
+// NORMALIZAR PUERTO
+// --------------------------------------------------
 
 function normalizePort(val) {
-  const port = parseInt(val, 10)
 
-  if (isNaN(port)) {
-    // named pipe
-    return val
-  }
+    const port = parseInt(val, 10)
 
-  if (port >= 0) {
-    // port number
-    return port
-  }
+    if (Number.isNaN(port)) {
 
-  return false
+        return val
+    }
+
+    if (port >= 0) {
+
+        return port
+    }
+
+    return false
 }
 
-/**
- * Event listener for HTTP server "error" event.
- */
+// --------------------------------------------------
+// MANEJAR ERROR
+// --------------------------------------------------
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error
-  }
 
-  const bind = typeof port === 'string'
-    ? `Pipe ${port}`
-    : `Port ${port}`
+    if (error.syscall !== 'listen') {
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(`${bind} requires elevated privileges`)
-      process.exit(1)
-      break
+        throw error
+    }
 
-    case 'EADDRINUSE':
-      console.error(`${bind} is already in use`)
-      process.exit(1)
-      break
+    const bind =
+        typeof port === 'string'
+            ? 'Pipe ' + port
+            : 'Port ' + port
 
-    default:
-      throw error
-  }
+    switch (error.code) {
+
+        case 'EACCES':
+
+            console.error(
+                `${bind} requiere privilegios elevados.`
+            )
+
+            process.exit(1)
+
+            break
+
+        case 'EADDRINUSE':
+
+            console.error(
+                `${bind} ya está siendo utilizado.`
+            )
+
+            process.exit(1)
+
+            break
+
+        default:
+
+            throw error
+    }
 }
 
-/**
- * Event listener for HTTP server "listening" event.
- */
+// --------------------------------------------------
+// SERVIDOR LISTO
+// --------------------------------------------------
 
 function onListening() {
-  const addr = server.address()
 
-  const bind = typeof addr === 'string'
-    ? `pipe ${addr}`
-    : `port ${addr.port}`
+    const addr = server.address()
 
-  debug(`💻 Listening on ${bind}`)
+    const bind =
+        typeof addr === 'string'
+            ? `pipe ${addr}`
+            : `http://localhost:${addr.port}`
 
-  console.log('')
-  console.log('======================================')
-  console.log('🚀 Servidor iniciado correctamente')
-  console.log(`🌐 http://localhost:${addr.port}`)
-  console.log('======================================')
-  console.log('')
+    console.log('')
+    console.log('======================================')
+    console.log('🚀 Servidor iniciado correctamente')
+    console.log(`🌐 ${bind}`)
+    console.log('======================================')
+    console.log('')
 }

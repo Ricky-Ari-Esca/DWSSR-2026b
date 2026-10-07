@@ -4,9 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node ./server/bin/www",
-    "dev": "DEBUG=dwssr-2026b:* nodemon ./server/bin/www",
-    "greet": "echo 'Hola Mundo'"
+    "start": "node ./server/bin/www.js",
+    "dev": "nodemon ./server/bin/www.js",
+    "dev:vite": "vite",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:vite\"",
+    "build": "vite build",
+    "preview": "npm run build && npm start",
+    "greet": "echo Hola Mundo"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -17,11 +21,12 @@
     "morgan": "~1.9.1"
   },
   "devDependencies": {
+    "concurrently": "^10.0.5",
     "nodemon": "^3.1.14",
     "vite": "^8.3.2"
   },
   "imports": {
     "#server/*": "./server/*",
-    "#router/*": ".server/routes/*"
+    "#routes/*": "./server/routes/*"
   }
 }

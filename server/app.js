@@ -1,79 +1,145 @@
-// Importar módulo para manejar errores
-import createError from 'http-errors';
+// Manejo de errores
+import createError from 'http-errors'
 
-// Importar el framework Express
-import express from 'express';
+// Framework Express
+import express from 'express'
 
-// Importar módulo para manejar rutas
-import path from 'node:path';
+// Manejo de rutas
+import path from 'node:path'
 
-// Importar módulo para manejar cookies
-import cookieParser from 'cookie-parser';
+// Manejo de cookies
+import cookieParser from 'cookie-parser'
 
-// Importar módulo para generar logs
-import logger from 'morgan';
+// Logger
+import logger from 'morgan'
 
-// Importar biblioteca Debug
-import createDebug from 'debug';
+// Debug
+import createDebug from 'debug'
 
-// Importar funciones para crear __dirname
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
+// Crear __dirname en ES Modules
+import { fileURLToPath } from 'node:url'
+import { dirname } from 'node:path'
 
-// Crear el objeto Debug
-const debug = createDebug('dwssr-2026b:server');
+// Handlebars
+import hbs from 'hbs'
 
-// Crear las variables __filename y __dirname
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// Rutas
+import indexRouter from '#routes/index.js'
+import usersRouter from '#routes/users.js'
 
-// Importar las rutas de la aplicación
-import indexRouter from './routes/index.js';
-import usersRouter from './routes/users.js';
+// Helper de Vite
+import { registerViteHelper } from './lib/vite.js'
 
-// Crear la aplicación Express
-debug('🔨 Creando backend');
+// --------------------------------------------------
+// CONFIGURACIÓN
+// --------------------------------------------------
 
-const app = express();
+const debug = createDebug('dwssr-2026b:server')
 
-// Configurar el motor de vistas
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+// Crear rutas del archivo actual
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
-// Configurar middlewares
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+// --------------------------------------------------
+// CREAR APLICACIÓN
+// --------------------------------------------------
 
-// Configurar archivos estáticos
-debug('🔨 Creando servidor de archivos estáticos');
+debug('🔨 Creando backend')
 
-app.use(express.static(path.join(__dirname, '..', 'public')));
+const app = express()
 
-// Registrar las rutas
-debug('🛣️ Registrando rutas');
+// --------------------------------------------------
+// HANDLEBARS
+// --------------------------------------------------
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'hbs')
 
-// Capturar errores 404
-app.use((req, res, next) => {
-  next(createError(404));
-});
+// Registrar helper de Vite
+registerViteHelper(hbs)
 
-// Manejador de errores
-app.use((err, req, res, next) => {
-  res.locals.message = err.message;
+// --------------------------------------------------
+// MIDDLEWARES
+// --------------------------------------------------
 
-  res.locals.error =
-    req.app.get('env') === 'development'
-      ? err
-      : {};
+app.use(logger('dev'))
 
-  res.status(err.status || 500);
-  res.render('error');
-});
+app.use(express.json())
 
-// Exportar la aplicación
-export default app;
+app.use(express.urlencoded({
+    extended: false
+}))
+
+app.use(cookieParser())
+
+// --------------------------------------------------
+// ARCHIVOS ESTÁTICOS DE PRODUCCIÓN
+// --------------------------------------------------
+
+if (process.env.NODE_ENV === 'production') {
+
+    debug('📦 Modo producción')
+
+    app.use(
+        express.static(
+            path.join(__dirname, '..', 'dist')
+        )
+    )
+}
+
+// --------------------------------------------------
+// ARCHIVOS PÚBLICOS
+// --------------------------------------------------
+
+debug('📁 Configurando archivos estáticos')
+
+app.use(
+    express.static(
+        path.join(__dirname, '..', 'public')
+    )
+)
+
+// --------------------------------------------------
+// RUTAS
+// --------------------------------------------------
+
+debug('🛣️ Registrando rutas')
+
+app.use('/', indexRouter)
+
+app.use('/users', usersRouter)
+
+// --------------------------------------------------
+// ERROR 404
+// --------------------------------------------------
+
+app.use(function (req, res, next) {
+
+    next(createError(404))
+
+})
+
+// --------------------------------------------------
+// MANEJADOR DE ERRORES
+// --------------------------------------------------
+
+app.use(function (err, req, res, next) {
+
+    res.locals.message = err.message
+
+    res.locals.error =
+        req.app.get('env') === 'development'
+            ? err
+            : {}
+
+    res.status(err.status || 500)
+
+    res.render('error')
+
+})
+
+// --------------------------------------------------
+// EXPORTAR
+// --------------------------------------------------
+
+export default app

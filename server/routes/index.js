@@ -1,14 +1,20 @@
-import express from 'express'
 
-const router = express.Router()
+import express from 'express';
 
-// Página principal
-router.get('/', function (req, res) {
+const router = express.Router();
+
+let counter = 0;
+const numbers = [];
+
+router.get('/', (req, res) => {
+    counter++;
+    numbers.push(counter);
 
     res.render('index', {
-        title: 'DWSSR-2026b'
-    })
+        title: 'Ricardo Arias Escárcega',
+        counter: counter,
+        numbers: numbers
+    });
+});
 
-})
-
-export default router
+export default router;

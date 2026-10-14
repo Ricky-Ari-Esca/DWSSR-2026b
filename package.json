@@ -4,13 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "NODE_ENV=production node ./server/bin/www.js",
-    "dev": "DEBUG=dwssr-2026b:* nodemon ./server/bin/www.js",
+    "start": "cross-env NODE_ENV=production node ./server/bin/www.js",
+    "dev": "cross-env DEBUG=dwssr-2026b:* nodemon ./server/bin/www.js",
     "dev:vite": "vite --host",
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:vite\"",
     "build": "vite build",
     "preview": "npm run build && npm start",
-    "greet": "echo 'Hola Mundo'"
+    "greet": "echo 'Hola Mundo'",
+    "lint:all": "npm run lint:back && npm run lint:front",
+    "lint:back": "eslint \"server/**/*.js\"",
+    "lint:front": "eslint \"src/**/*.js\"",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

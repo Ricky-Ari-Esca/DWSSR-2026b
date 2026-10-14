@@ -1,45 +1,56 @@
-// Importar configurador de Vite
-import { defineConfig } from 'vite'
+// Importar el configurador de Vite
+import { defineConfig } from "vite";
 
-// Importar administrador de rutas
-import { resolve } from 'node:path'
+// Importar el administrador de rutas
+import { resolve } from "node:path";
 
-// Importar módulos para crear __dirname
-import { fileURLToPath } from 'node:url'
-import { dirname } from 'node:path'
+// Importar Tailwind CSS
+import tailwindcss from "@tailwindcss/vite";
 
-// Crear __filename y __dirname
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+// Importar utilidades para obtener el directorio actual
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
+
+// Obtener las rutas del archivo actual
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Configuración de Vite
 export default defineConfig({
+  // Directorio raíz del frontend
+  root: resolve(__dirname, "src"),
 
-    // Carpeta raíz del frontend
-    root: 'src',
+  // Plugins
+  plugins: [tailwindcss()],
 
-    // Servidor de desarrollo
-    server: {
-        host: '0.0.0.0',
-        port: 5173,
-        strictPort: true
+  // Servidor de desarrollo
+  server: {
+    // Puerto de escucha
+    port: 5173,
+
+    // No cambiar de puerto si está ocupado
+    strictPort: true,
+  },
+
+  // Configuración de compilación
+  build: {
+    // Directorio de salida
+    outDir: resolve(__dirname, "dist"),
+
+    // Limpiar la carpeta de salida antes de compilar
+    emptyOutDir: true,
+
+    // Generar manifiesto para Express
+    manifest: true,
+
+    // Archivos de entrada
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "src/main.js"),
+      },
     },
+  },
 
-    // Configuración de compilación
-    build: {
-        outDir: '../dist',
-        emptyOutDir: true,
-
-        // Generar manifest
-        manifest: true,
-
-        rollupOptions: {
-            input: {
-                main: resolve(__dirname, 'src/main.js')
-            }
-        }
-    },
-
-    // No utilizar publicDir de Vite
-    publicDir: false
-})
+  // Desactivar la carpeta pública predeterminada de Vite
+  publicDir: false,
+});

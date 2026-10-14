@@ -1,33 +1,24 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f4f4f4;
-    color: #222;
-}
+@import "tailwindcss";
 
-.container {
-    max-width: 1000px;
-    margin: 50px auto;
-    padding: 30px;
-    text-align: center;
-}
+/*
+  Indica a Tailwind CSS dónde buscar
+  las clases utilizadas en las vistas de Handlebars.
+*/
+@source "../../server/views/**/*.hbs";
 
-h1 {
-    margin-bottom: 20px;
-}
-
+/* Estilos para los párrafos */
 p {
-    font-size: 18px;
-    line-height: 1.6;
+  margin-top: 20px;
 }
 
-.status {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 20px;
-    border-radius: 8px;
-    background: #e8f5e9;
-    color: #2e7d32;
-    font-weight: bold;
+/* Estilos generales de la página */
+body {
+  padding: 50px;
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+
+/* Estilos para los encabezados principales */
+h1 {
+  color: #00b7ff;
 }

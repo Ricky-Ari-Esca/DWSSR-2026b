@@ -1,0 +1,10 @@
+cat > .prettierignore <<'EOF'
+dist
+node_modules
+package-lock.json
+.devcontainer
+.vscode
+.github
+*.config.js
+*.hbs
+EOF

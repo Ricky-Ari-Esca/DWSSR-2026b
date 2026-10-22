@@ -1,8 +1,8 @@
-dist/**
-node_modules/**
+dist
+node_modules
 package-lock.json
-.devcontainer/**
-.vscode/**
-.github/**
+.devcontainer
+.vscode
+.github
 *.config.js
 *.hbs

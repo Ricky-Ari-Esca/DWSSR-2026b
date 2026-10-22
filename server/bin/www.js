@@ -1,16 +1,16 @@
 // Importar HTTP
-import http from "node:http";
+import http from 'node:http';
 
 // Importar aplicación Express
-import app from "../app.js";
+import app from '../app.js';
 
 // --------------------------------------------------
 // CONFIGURACIÓN DEL PUERTO
 // --------------------------------------------------
 
-const port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort(process.env.PORT || '3000');
 
-app.set("port", port);
+app.set('port', port);
 
 // --------------------------------------------------
 // CREAR SERVIDOR
@@ -24,9 +24,9 @@ const server = http.createServer(app);
 
 server.listen(port);
 
-server.on("error", onError);
+server.on('error', onError);
 
-server.on("listening", onListening);
+server.on('listening', onListening);
 
 // --------------------------------------------------
 // NORMALIZAR PUERTO
@@ -51,21 +51,21 @@ function normalizePort(val) {
 // --------------------------------------------------
 
 function onError(error) {
-  if (error.syscall !== "listen") {
+  if (error.syscall !== 'listen') {
     throw error;
   }
 
-  const bind = typeof port === "string" ? `Pipe ${port}` : `Port ${port}`;
+  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
 
   switch (error.code) {
-    case "EACCES":
+    case 'EACCES':
       console.error(`${bind} requiere privilegios elevados.`);
 
       process.exit(1);
 
       break;
 
-    case "EADDRINUSE":
+    case 'EADDRINUSE':
       console.error(`${bind} ya está siendo utilizado.`);
 
       process.exit(1);
@@ -84,13 +84,12 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
 
-  const bind =
-    typeof addr === "string" ? `pipe ${addr}` : `http://localhost:${addr.port}`;
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `http://localhost:${addr.port}`;
 
-  console.log("");
-  console.log("======================================");
-  console.log("🚀 Servidor iniciado correctamente");
+  console.log('');
+  console.log('======================================');
+  console.log('🚀 Servidor iniciado correctamente');
   console.log(`🌐 ${bind}`);
-  console.log("======================================");
-  console.log("");
+  console.log('======================================');
+  console.log('');
 }

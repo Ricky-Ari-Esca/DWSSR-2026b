@@ -1,10 +1,10 @@
 // Biblioteca File Stream
-import fs from "node:fs";
+import fs from 'node:fs';
 
 // Biblioteca de rutas
-import path from "node:path";
-import { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import path from 'node:path';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 // Crear las variables de rutas
 const __filename = fileURLToPath(import.meta.url);
@@ -18,10 +18,10 @@ const __dirname = dirname(__filename);
  */
 export function viteAssets() {
   // Obtener el modo de ejecución
-  const isDev = process.env.NODE_ENV !== "production";
+  const isDev = process.env.NODE_ENV !== 'production';
 
   // URL del servidor de desarrollo de Vite
-  const viteDevServer = process.env.VITE_DEV_SERVER || "http://localhost:5173";
+  const viteDevServer = process.env.VITE_DEV_SERVER || 'http://localhost:5173';
 
   // Si estamos en desarrollo
   if (isDev) {
@@ -32,35 +32,26 @@ export function viteAssets() {
   }
 
   // Ruta del manifest generado por Vite
-  const manifestPath = path.join(
-    __dirname,
-    "..",
-    "..",
-    "dist",
-    ".vite",
-    "manifest.json",
-  );
+  const manifestPath = path.join(__dirname, '..', '..', 'dist', '.vite', 'manifest.json');
 
   // Comprobar si existe el manifest
   if (!fs.existsSync(manifestPath)) {
     console.warn("Vite manifest no encontrado. Ejecuta 'npm run build'.");
-    return "";
+    return '';
   }
 
   // Leer y convertir el manifest a JSON
-  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
 
   // Obtener el punto de entrada del frontend
-  const mainEntry = manifest["main.js"];
+  const mainEntry = manifest['main.js'];
 
   if (!mainEntry) {
-    console.warn(
-      "El archivo main.js no está disponible en el manifest de Vite.",
-    );
-    return "";
+    console.warn('El archivo main.js no está disponible en el manifest de Vite.');
+    return '';
   }
 
-  let tags = "";
+  let tags = '';
 
   // Generar las etiquetas CSS
   if (mainEntry.css) {
@@ -79,5 +70,5 @@ export function viteAssets() {
  * Registrar el helper de Handlebars
  */
 export function registerViteHelper(hbs) {
-  hbs.registerHelper("viteAssets", () => new hbs.SafeString(viteAssets()));
+  hbs.registerHelper('viteAssets', () => new hbs.SafeString(viteAssets()));
 }

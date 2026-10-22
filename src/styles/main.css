@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /*
   Indica a Tailwind CSS dónde buscar
@@ -14,7 +14,7 @@ p {
 /* Estilos generales de la página */
 body {
   padding: 50px;
-  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
   font-size: 14px;
 }
 

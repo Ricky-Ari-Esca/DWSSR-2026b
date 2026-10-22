@@ -3,10 +3,12 @@
 # Desarrollo Web SSR
 
 # Datos de la asignatura
-CLAVE DE LA ASIGNATURA	DAB-1704
-CRÉDITOS	1-4-5
+
+CLAVE DE LA ASIGNATURA DAB-1704
+CRÉDITOS 1-4-5
 
 # Caracterización de la asignatura
+
 Esta asignatura proporciona al perfil del ingeniero en ITICS las competencias necesarias para participar en todas las etapas de la pila tecnológica de una aplicación web.
 
 # Objetivos generales del curso
@@ -22,25 +24,26 @@ Esta asignatura aporta al perfil del Ingeniero en Tecnologías de la Informació
     Competencias previas
 
     Desarrolla aplicaciones web utilizando ES6, HTML y CSS, y utiliza herramientas de software que facilitan el desarrollo de aplicaciones web modernas.
-    
+
     Competencias a desarrollar
 
     El participante identifica los frameworks más utilizados en la industria para el desarrollo de aplicaciones web de pila completa y emplea uno de ellos para desarrollar aplicaciones web siguiendo las mejores prácticas de desarrollo.
 
 # Programa sintético
+
 | Icono | Tipo de commit | Nombre                    |
 | ----- | -------------- | ------------------------- |
-| ✨     | `feat`         | Nueva funcionalidad       |
+| ✨    | `feat`         | Nueva funcionalidad       |
 | 🐛    | `fix`          | Corrección de errores     |
 | 📝    | `docs`         | Documentación             |
 | 💄    | `style`        | Cambios de estilos        |
 | ♻️    | `refactor`     | Refactorización de código |
-| ⚡     | `perf`         | Mejora de rendimiento     |
-| ✅     | `test`         | Pruebas                   |
+| ⚡    | `perf`         | Mejora de rendimiento     |
+| ✅    | `test`         | Pruebas                   |
 | 🔧    | `chore`        | Mantenimiento             |
 | 🚀    | `deploy`       | Despliegue                |
 | 🔒    | `security`     | Seguridad                 |
-| ⏪     | `revert`       | Revertir cambios          |
+| ⏪    | `revert`       | Revertir cambios          |
 | 🔀    | `merge`        | Integración de ramas      |
 
 # # Fuentes de información

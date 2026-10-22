@@ -1,82 +1,96 @@
-import js from "@eslint/js";
-import globals from "globals";
-import { defineConfig } from "eslint/config";
+
+import js from '@eslint/js';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import { plugins, rules } from 'eslint-config-airbnb-extended';
+import prettier from 'eslint-config-prettier/flat';
+import globals from 'globals';
+
+const extractRules = (categories) =>
+  Object.values(categories).reduce(
+    (result, category) => ({
+      ...result,
+      ...category.rules,
+    }),
+    {},
+  );
+
+const airbnbBaseRules = extractRules(rules.base);
+const airbnbNodeRules = extractRules(rules.node);
 
 export default defineConfig([
-  // 1. Configuración general de JavaScript
+  // Archivos y carpetas que ESLint debe ignorar.
+  globalIgnores(['dist/**', 'node_modules/**']),
+
+  // Reglas recomendadas de JavaScript.
   {
-    files: ["**/*.{js,mjs,cjs}"],
+    files: ['**/*.{js,mjs,cjs}'],
     plugins: { js },
-    extends: ["js/recommended"],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-    },
+    extends: ['js/recommended'],
   },
 
-  // 2. Ignorar archivos y carpetas de compilación
-  {
-    ignores: [
-      "dist/**",
-      "node_modules/**",
-    ],
-  },
+  // Configuraciones de Airbnb Extended.
+  plugins.stylistic,
+  plugins.importX,
 
-  // 3. Configuración del backend
+  // Configuración para el backend de Express y Node.js.
   {
-    files: ["server/**/*.{js,mjs}"],
+    files: ['server/**/*.{js,mjs,cjs}', 'vite.config.js'],
     languageOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
+      ecmaVersion: 'latest',
+      sourceType: 'module',
       globals: {
         ...globals.node,
       },
     },
+
+    ...plugins.node,
+
     rules: {
-      "no-unused-vars": [
-        "error",
-        {
-          argsIgnorePattern: "^_",
-        },
-      ],
+      ...airbnbBaseRules,
+      ...airbnbNodeRules,
+
+      // Compatibilidad con patrones utilizados por Express y Node.js.
+      'no-underscore-dangle': 'off',
+      'no-use-before-define': 'off',
+      'no-shadow': 'off',
+      'no-console': 'off',
+      'n/no-process-exit': 'off',
+      'n/no-sync': 'off',
+
+      // Importaciones de módulos ES y alias del proyecto.
+      'import-x/order': 'off',
+      'import-x/extensions': 'off',
+      'import-x/no-duplicates': 'off',
+      'import-x/no-rename-default': 'off',
     },
   },
 
-  // 4. Configuración de Vite
+  // Configuración para el frontend.
   {
-    files: ["vite.config.js"],
+    files: ['src/**/*.{js,mjs,cjs}', 'public/**/*.{js,mjs,cjs}'],
     languageOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
-      globals: {
-        ...globals.node,
-      },
-    },
-  },
-
-  // 5. Configuración del frontend
-  {
-    files: ["src/**/*.{js,mjs}"],
-    languageOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
+      ecmaVersion: 'latest',
+      sourceType: 'module',
       globals: {
         ...globals.browser,
       },
     },
-  },
 
-  // 6. Configuración de JavaScript en public
-  {
-    files: ["public/**/*.{js,mjs}"],
-    languageOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
-      globals: {
-        ...globals.browser,
-      },
+    rules: {
+      ...airbnbBaseRules,
+
+      // Compatibilidad con los imports del frontend.
+      'import-x/order': 'off',
+      'import-x/extensions': 'off',
+      'import-x/no-duplicates': 'off',
+      'import-x/no-rename-default': 'off',
+
+      // Permitir incrementos y advertir sobre console.log.
+      'no-plusplus': 'off',
+      'no-console': 'warn',
     },
   },
+
+  // Evita conflictos entre las reglas de ESLint y Prettier.
+  prettier,
 ]);

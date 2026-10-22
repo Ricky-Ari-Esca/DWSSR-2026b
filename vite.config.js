@@ -1,15 +1,17 @@
 // Importar el configurador de Vite
-import { defineConfig } from "vite";
 
 // Importar el administrador de rutas
 import { resolve } from "node:path";
 
 // Importar Tailwind CSS
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import tailwindcss from "@tailwindcss/vite";
 
 // Importar utilidades para obtener el directorio actual
-import { fileURLToPath } from "node:url";
-import { dirname } from "node:path";
+
+import { defineConfig } from "vite";
 
 // Obtener las rutas del archivo actual
 const __filename = fileURLToPath(import.meta.url);

@@ -1,9 +1,13 @@
 body {
-    padding: 50px;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-    /* Quitamos el color de aquí para que el texto normal sea negro */
+  padding: 50px;
+  font:
+    14px "Lucida Grande",
+    Helvetica,
+    Arial,
+    sans-serif;
+  /* Quitamos el color de aquí para que el texto normal sea negro */
 }
 
 h1 {
-    color: blue;
+  color: blue;
 }

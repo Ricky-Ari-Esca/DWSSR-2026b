@@ -1,8 +1,6 @@
 // Manejo de errores
-import createError from "http-errors";
 
 // Framework Express
-import express from "express";
 
 // Manejo de rutas y directorios
 import path from "node:path";
@@ -10,13 +8,15 @@ import { fileURLToPath } from "node:url";
 
 // Middlewares
 import cookieParser from "cookie-parser";
-import logger from "morgan";
 
 // Depuración
 import createDebug from "debug";
+import express from "express";
 
 // Motor de plantillas Handlebars
 import hbs from "hbs";
+import createError from "http-errors";
+import logger from "morgan";
 
 // Rutas de la aplicación
 import indexRouter from "#routes/index.js";
@@ -75,8 +75,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, _next) => {
   res.locals.message = err.message;
 
-  res.locals.error =
-    req.app.get("env") === "development" ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   res.status(err.status || 500);
 

@@ -1,28 +1,16 @@
-// Importar Express
 import express from "express";
 
-// Crear el enrutador
 const router = express.Router();
 
-// Variables para llevar el contador
-let counter = 0;
-const numbers = [];
+/* GET home page. */
+router.get("/", (req, res) => {
+  let contador = 0;
+  contador += 1;
 
-// Ruta principal
-router.get("/", (req, res, _next) => {
-  // Incrementar el contador
-  counter++;
-
-  // Guardar el número actual
-  numbers.push(counter);
-
-  // Renderizar la página principal
   res.render("index", {
-    title: "Ricardo Arias Escárcega",
-    counter,
-    numbers,
+    title: "Express",
+    contador,
   });
 });
 
-// Exportar el enrutador
 export default router;

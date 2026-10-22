@@ -1,11 +1,10 @@
-
 {
-    "editor.fontSize": 16,
-    "terminal.integrated.fontSize": 14,
-    "editor.tabSize": 2,
-    "editor.insertSpaces": true,
-    "editor.detectIndentation": false,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "always"
-    }
+  // Tamaño de la indentación (espacios)
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  // Corregir errores automáticamente al guardar
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always"
+  }
 }

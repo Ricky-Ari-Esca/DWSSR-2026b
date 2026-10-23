@@ -2,14 +2,18 @@ import express from 'express';
 
 const router = express.Router();
 
+let counter = 0;
+const numbers = [];
+
 /* GET home page. */
-router.get('/', (req, res) => {
-  let contador = 0;
-  contador += 1;
+router.get('/', (req, res, _next) => {
+  counter += 1;
+  numbers.push(counter);
 
   res.render('index', {
-    title: 'Express',
-    contador,
+    title: 'Ivan Rivalcoba',
+    counter,
+    numbers,
   });
 });
 

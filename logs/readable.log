@@ -1,0 +1,10 @@
+{
+  message: 'Prueba de Winston',
+  level: 'info',
+  timestamp: '28-10-2026 20:12:47'
+}
+{
+  message: 'Prueba de error',
+  level: 'error',
+  timestamp: '28-10-2026 20:12:47'
+}

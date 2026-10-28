@@ -1,5 +1,5 @@
-// Importar estilos principales
-import './styles/main.css';
+// Importando los estilos de la pagina
+import './styles/main.css'
 
-// Mensaje de confirmación
-console.log('🎉 VITE ⚡ + EXPRESS 🚂 Working!');
+// Impriendo en consola
+console.warn("🎉 VITE ⚡ + EXPRESS 🚂 Working!!")

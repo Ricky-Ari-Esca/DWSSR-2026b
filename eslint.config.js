@@ -1,96 +1,74 @@
-
-import js from '@eslint/js';
 import { defineConfig, globalIgnores } from 'eslint/config';
+import js from '@eslint/js';
+import globals from 'globals';
 import { plugins, rules } from 'eslint-config-airbnb-extended';
 import prettier from 'eslint-config-prettier/flat';
-import globals from 'globals';
 
-const extractRules = (categories) =>
-  Object.values(categories).reduce(
-    (result, category) => ({
-      ...result,
-      ...category.rules,
-    }),
-    {},
-  );
+const { base } = rules;
 
-const airbnbBaseRules = extractRules(rules.base);
-const airbnbNodeRules = extractRules(rules.node);
+// Reglas de Airbnb (base) sin las de formato: de eso se encarga Prettier
+const airbnbBase = [
+  base.bestPractices,
+  base.errors,
+  base.es6,
+  base.imports,
+  base.strict,
+  base.style,
+  base.variables,
+].map((ruleSet) => ({ name: ruleSet.name, rules: ruleSet.rules }));
 
 export default defineConfig([
-  // Archivos y carpetas que ESLint debe ignorar.
-  globalIgnores(['dist/**', 'node_modules/**']),
-
-  // Reglas recomendadas de JavaScript.
+  globalIgnores([
+    'dist/**',
+    'node_modules/**',
+    '.devcontainer/**',
+    '.vscode/**',
+    '.github/**',
+    '*.config.js',
+    'README.md',
+  ]),
   {
-    files: ['**/*.{js,mjs,cjs}'],
-    plugins: { js },
+    files: ['**/*.{js,mjs}'],
+    plugins: { js, ...plugins.importX.plugins },
     extends: ['js/recommended'],
-  },
-
-  // Configuraciones de Airbnb Extended.
-  plugins.stylistic,
-  plugins.importX,
-
-  // Configuración para el backend de Express y Node.js.
-  {
-    files: ['server/**/*.{js,mjs,cjs}', 'vite.config.js'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
-      globals: {
-        ...globals.node,
-      },
     },
-
-    ...plugins.node,
-
-    rules: {
-      ...airbnbBaseRules,
-      ...airbnbNodeRules,
-
-      // Compatibilidad con patrones utilizados por Express y Node.js.
-      'no-underscore-dangle': 'off',
-      'no-use-before-define': 'off',
-      'no-shadow': 'off',
-      'no-console': 'off',
-      'n/no-process-exit': 'off',
-      'n/no-sync': 'off',
-
-      // Importaciones de módulos ES y alias del proyecto.
-      'import-x/order': 'off',
-      'import-x/extensions': 'off',
-      'import-x/no-duplicates': 'off',
-      'import-x/no-rename-default': 'off',
+    settings: {
+      'import-x/resolver-next': [
+        plugins.importX.plugins['import-x'].createNodeResolver(),
+      ],
     },
   },
-
-  // Configuración para el frontend.
+  ...airbnbBase,
+  // Back-end, configuración de Vite
   {
-    files: ['src/**/*.{js,mjs,cjs}', 'public/**/*.{js,mjs,cjs}'],
-    languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      globals: {
-        ...globals.browser,
-      },
-    },
-
+    files: ['server/**/*.{js,mjs}'],
+    languageOptions: { globals: { ...globals.node } },
+  },
+  // Front-end
+  {
+    files: ['src/**/*.{js,mjs}', 'public/**/*.{js,mjs}'],
+    languageOptions: { globals: { ...globals.browser } },
+  },
+  {
     rules: {
-      ...airbnbBaseRules,
-
-      // Compatibilidad con los imports del frontend.
-      'import-x/order': 'off',
-      'import-x/extensions': 'off',
-      'import-x/no-duplicates': 'off',
-      'import-x/no-rename-default': 'off',
-
-      // Permitir incrementos y advertir sobre console.log.
-      'no-plusplus': 'off',
-      'no-console': 'warn',
+      'no-underscore-dangle': ['error', { allow: ['__filename', '__dirname'] }],
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      // Los alias "#server/*" y devDependencies de configuración
+      // ESM en Node exige la extensión .js en imports relativos
+      'import-x/extensions': ['error', 'ignorePackages'],
+      'import-x/no-unresolved': ['error', { ignore: ['^#'] }],
+       'import-x/no-extraneous-dependencies': ['error', { devDependencies: [] }],
     },
   },
-
-  // Evita conflictos entre las reglas de ESLint y Prettier.
+  {
+    files: ['src/**/*.{js,mjs}'],
+    rules: {
+      'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
+    },
+  },
+  // Siempre al final: desactiva reglas que chocan con Prettier
   prettier,
 ]);

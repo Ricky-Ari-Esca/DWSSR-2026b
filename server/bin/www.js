@@ -1,36 +1,10 @@
-// Importar HTTP
-import http from 'node:http';
+#!/usr/bin/env node
 
-// Importar aplicación Express
+import createDebug from 'debug';
+import http from 'node:http';
 import app from '../app.js';
 
-// --------------------------------------------------
-// CONFIGURACIÓN DEL PUERTO
-// --------------------------------------------------
-
-const port = normalizePort(process.env.PORT || '3000');
-
-app.set('port', port);
-
-// --------------------------------------------------
-// CREAR SERVIDOR
-// --------------------------------------------------
-
-const server = http.createServer(app);
-
-// --------------------------------------------------
-// INICIAR SERVIDOR
-// --------------------------------------------------
-
-server.listen(port);
-
-server.on('error', onError);
-
-server.on('listening', onListening);
-
-// --------------------------------------------------
-// NORMALIZAR PUERTO
-// --------------------------------------------------
+const debug = createDebug('dwssr-2026b:server');
 
 function normalizePort(val) {
   const port = parseInt(val, 10);
@@ -46,9 +20,11 @@ function normalizePort(val) {
   return false;
 }
 
-// --------------------------------------------------
-// MANEJAR ERROR
-// --------------------------------------------------
+const port = normalizePort(process.env.PORT || '3000');
+
+app.set('port', port);
+
+const server = http.createServer(app);
 
 function onError(error) {
   if (error.syscall !== 'listen') {
@@ -59,17 +35,13 @@ function onError(error) {
 
   switch (error.code) {
     case 'EACCES':
-      console.error(`${bind} requiere privilegios elevados.`);
-
-      process.exit(1);
-
+      debug(`${bind} requires elevated privileges`);
+      process.exitCode = 1;
       break;
 
     case 'EADDRINUSE':
-      console.error(`${bind} ya está siendo utilizado.`);
-
-      process.exit(1);
-
+      debug(`${bind} is already in use`);
+      process.exitCode = 1;
       break;
 
     default:
@@ -77,19 +49,14 @@ function onError(error) {
   }
 }
 
-// --------------------------------------------------
-// SERVIDOR LISTO
-// --------------------------------------------------
-
 function onListening() {
   const addr = server.address();
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
 
-  const bind = typeof addr === 'string' ? `pipe ${addr}` : `http://localhost:${addr.port}`;
-
-  console.log('');
-  console.log('======================================');
-  console.log('🚀 Servidor iniciado correctamente');
-  console.log(`🌐 ${bind}`);
-  console.log('======================================');
-  console.log('');
+  debug(`💻 Listening on ${bind}`);
 }
+
+server.on('error', onError);
+server.on('listening', onListening);
+
+server.listen(port);

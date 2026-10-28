@@ -1,3 +1,4 @@
+
 {
   // Tamaño de la fuente del editor (px)
   "editor.fontSize": 16,
@@ -9,9 +10,28 @@
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
+
+  // Corrección automática de ESLint al guardar
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
   },
-  "editor.formatOnSave": true
+
+  // Formatear al guardar
+  "editor.formatOnSave": true,
+
+  // Reenviar puertos remotos automáticamente
+  "remote.autoForwardPorts": true,
+  "remote.restoreForwardedPorts": true,
+
+  // Notificar cuando se detecten los puertos del proyecto
+  "remote.portsAttributes": {
+    "5173": {
+      "label": "Vite - DWSSR-2026b",
+      "onAutoForward": "notify"
+    },
+    "3000": {
+      "label": "Express - DWSSR-2026b",
+      "onAutoForward": "notify"
+    }
+  }
 }
- 

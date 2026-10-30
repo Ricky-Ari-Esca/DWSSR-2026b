@@ -22,6 +22,8 @@ import indexRouter from '#routes/index.js';
 import usersRouter from '#routes/users.js';
 // Importando el registrador del helper
 import { registerViteHelper } from './lib/vite.js';
+// Importando la configuracion de winston logger
+import logger from './lib/winston.js';
 
 // Creacion del objeto Debug
 const debug = createDebug('dwssr-2026b:server'); // 👈
@@ -40,7 +42,14 @@ app.set('view engine', 'hbs');
 registerViteHelper(hbs);
 
 // Configurar middlewares de la aplicacion
-app.use(morgan('dev'));
+app.use(
+  morgan('dev', { 
+    stream: { 
+      write: (msg) => logger.info(msg.trim()) 
+    } 
+  }),
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
